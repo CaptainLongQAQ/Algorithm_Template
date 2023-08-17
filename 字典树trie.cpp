@@ -27,9 +27,7 @@ public:
             p = son[p][u];
         }
         ++cnt[p];
-        
     }
-
     int check(string& s){
         int p = 0;
         for(int i = 0; i < s.size(); ++i){
@@ -41,7 +39,6 @@ public:
         }
         return cnt[p];
     }
-    
 };
 
 
