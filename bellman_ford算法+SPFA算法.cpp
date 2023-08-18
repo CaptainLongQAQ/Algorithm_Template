@@ -23,15 +23,15 @@ struct Edge{
     int a,b,v;
 }edge[M];
 
-
 int dij[N],backup[N];
 bool st[N];
 
 
-int bell_ford(){
+int bell_ford(int start, int end){
     memset(dij,0x3f,sizeof dij);
+    dij[start] = 0;
     for(int i = 0; i < k; ++i){
-        memcpy(backup,dij,sizeof dij);//防止串联的情况
+        memcpy(backup,dij,sizeof dij);//防止串联的情况,不拷贝就不能保证是第i次条边
         for(int j = 0; j < m; ++j){
             int a = edge[j].a,b = edge[j].b,v = edge[j].v;
             dij[b] = min(dij[b],backup[a] + v);
@@ -45,7 +45,7 @@ int main(){
     for(int i = 0; i < m; ++i){
         cin >> edge[i].a >> edge[i].b >> edge[i].v;
     }
-    cout << bell_ford();
+    cout << bell_ford(1,n);
     return 0;
 }
 
