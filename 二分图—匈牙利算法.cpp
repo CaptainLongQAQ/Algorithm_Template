@@ -16,6 +16,10 @@ public:
     bool possibleBipartition(int n, vector<vector<int>>& dislikes) {
         vector<int>have(n + 1, 0);
         vector<vector<int>>g(n + 1,vector<int>());
+        for (int l = 0; l < dislikes.size(); ++l) {
+            g[dislikes[l][0]].push_back(dislikes[l][1]);
+            g[dislikes[l][1]].push_back(dislikes[l][0]);
+        }
         function<bool(int, int)>dfs = [&](int i, int co)->bool{
             have[i] = co;
             for (int j = 0; j < g[i].size(); ++j) {
