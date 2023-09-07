@@ -9,7 +9,7 @@
 #include <vector>
 #include <climits>
 using namespace std;
-//Prime求最小生成树
+//Prime求最小生成树，稠密图
 int n;
 const int N = 1010,inf = 0x3f3f3f3f;
 int dis[N];
@@ -36,7 +36,7 @@ int prime() {
 
 
 //Kruskal算法
-
+//稀疏图
 struct Edge{
     int a,b,w;
     bool operator< (Edge & t) {
