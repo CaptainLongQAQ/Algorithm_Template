@@ -15,6 +15,7 @@ using namespace std;
 //n表示有n个顶点
 //k表示源点到终点最多有k条边
 //m表示有m条边
+//bellman_ford还有一个意思表示最多不经过k条边start--> end的最小距离
 int k,n,m;
 
 const int N = 1000;
