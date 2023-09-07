@@ -10,7 +10,7 @@
 using namespace std;
 
 //SPFA是bellman的优化
-//处理负权边单源路最短路问题没有负环的图
+//处理负权边单源路最短路问题没有负环的图，但可有负权边
 
 
 const int N = 1010;
