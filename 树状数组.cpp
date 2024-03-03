@@ -6,7 +6,8 @@ public:
 
     }
     int low_bit (int x) {return x & -x;}
-    int query (int x) {
+    // 求前缀和 [1, x]
+    int add (int x) {
         int res = 0;
         while (x) {
             res += tree[x];
