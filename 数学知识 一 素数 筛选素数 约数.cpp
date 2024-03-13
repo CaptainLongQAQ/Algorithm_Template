@@ -37,13 +37,13 @@ int primes(int n){
 }
 //线性筛法
 int primess(int n){
-    int have[N];
+    bool vis[N];
     int cnt = 0;
-    vector<int>num;
-    memset(have,0,N);
+    int num[N];
+    memset(vis, 0, N);
     for(int i = 2;i <= n; ++i){
-        if(!have[i]) ++cnt,num.push_back(i);
-        for(int j = 0; num[j] <= n / i; ++j){
+        if(!vis[i]) num[++cnt] = i;
+        for(int j = 1; 1LL * i * num[j] <= n; ++j){
             have[num[j] * i] = true;
             if(i % num[j] == 0) break;
         }
