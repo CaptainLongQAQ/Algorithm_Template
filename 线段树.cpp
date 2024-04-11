@@ -5,53 +5,70 @@
 #include <algorithm>
 using namespace std;
 
-#define N 100005
-#define LL long long
-#define lc u<<1
-#define rc u<<1|1
-LL w[N];
-struct Tree{ //线段树
-  LL l,r,sum,add;
-}tr[N*4];
+const int N = 1e5 + 10;
+#define lc p << 1
+#define rc p << 1 | 1
 
-void pushup(LL u){ //上传
-  tr[u].sum=tr[lc].sum+tr[rc].sum;
+ll w[N];
+
+struct node {
+    ll l, r, sum, add;
+}tr[4 * N];
+
+void pushup(int p) {
+    tr[p].sum = tr[lc].sum + tr[rc].sum;
 }
-void pushdown(LL u){ //下传
-  if(tr[u].add){
-    tr[lc].sum+=tr[u].add*(tr[lc].r-tr[lc].l+1),
-    tr[rc].sum+=tr[u].add*(tr[rc].r-tr[rc].l+1),
-    tr[lc].add+=tr[u].add,
-    tr[rc].add+=tr[u].add,
-    tr[u].add=0;      
-  }
+
+void pushdown(int p) {
+    if (tr[p].add) {
+        // 左边
+        tr[lc].add += tr[p].add;
+        tr[rc].add += tr[p].add;
+        tr[lc].sum += (tr[lc].r - tr[lc].l + 1) * tr[p].add;
+        tr[rc].sum += (tr[rc].r - tr[rc].l + 1) * tr[p].add;
+        tr[p].add = 0;
+    }
 }
-void build(LL u,LL l,LL r){ //建树
-  tr[u]={l,r,w[l],0};
-  if(l==r) return;
-  LL m=l+r>>1;
-  build(lc,l,m);
-  build(rc,m+1,r);
-  pushup(u);
+
+void build(int p, int l, int r) {
+    tr[p] = {l, r, w[l], 0};
+    if (l == r) return;
+    int mid = l + r >> 1;
+    build(lc, l, mid);
+    build(rc, mid + 1, r);
+    pushup(p);
 }
-void change(LL u,LL x,LL y,LL k){ //区修
-  if(x>tr[u].r || y<tr[u].l) return;
-  if(x<=tr[u].l && tr[u].r<=y){
-    tr[u].sum+=(tr[u].r-tr[u].l+1)*k;
-    tr[u].add+=k;
-    return;
-  }
-  pushdown(u);
-  change(lc,x,y,k); 
-  change(rc,x,y,k);
-  pushup(u);
+
+
+void update(int p, int l, int r, int k) {
+    if (l <= tr[p].l && r >= tr[p].r) {
+        // 打烂标记
+        tr[p].add += k;
+        tr[p].sum += (tr[p].r - tr[p].l + 1) * k;
+        return;
+    }
+    int mid = tr[p].l + tr[p].r >> 1;
+    pushdown(p);
+    if (l <= mid) update(lc, l, r, k);
+    if (r > mid) update(rc, l, r, k);
+    pushup(p);
 }
-LL query(LL u,LL x,LL y){ //区查
-  if(x>tr[u].r || y<tr[u].l) return 0;
-  if(x<=tr[u].l && tr[u].r<=y) return tr[u].sum;
-  pushdown(u);
-  return query(lc,x,y)+query(rc,x,y);
+
+ll query(int p, int l, int r) {
+    if (l > tr[p].r || r < tr[p].l) return 0;
+    if (l <= tr[p].l && r >= tr[p].r) {
+        return tr[p].sum;
+    }
+    ll res = 0;
+    int mid = tr[p].l + tr[p].r >> 1;
+    pushdown(p);
+    if (l <= mid) res += query(lc, l ,r);
+    if (r > mid) res += query(rc, l, r);
+    return res;
 }
+
+
+
 int main(){
   int n,m,op,x,y,k;  
   cin>>n>>m;
